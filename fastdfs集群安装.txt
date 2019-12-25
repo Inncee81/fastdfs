@@ -153,9 +153,14 @@ from /software/fastdfs-nginx-module-1.20/src/ngx_http_fastdfs_module.c:6:
 #################
 
 需要改fastdfs-nginx-module-master/src/config文件，两个位置，修改如下：
-ngx_module_incs="/usr/include/fastdfs /usr/include/fastcommon/"
-CORE_INCS="$CORE_INCS /usr/include/fastdfs /usr/include/fastcommon/"
+原文件    ngx_module_incs="/usr/local/include"
+修改后    ngx_module_incs="/usr/include/fastdfs /usr/include/fastcommon/"
+原文件    CORE_INCS="$CORE_INCS /usr/local/include"
+修改后    CORE_INCS="$CORE_INCS /usr/include/fastdfs /usr/include/fastcommon/"
 
+使用sed命令，config文件需要自行查找
+# sed -i 's^ngx_module_incs="/usr/local/include"^ngx_module_incs="/usr/include/fastdfs /usr/include/fastcommon/"^g'  fastdfs-nginx-module-master/src/config
+# sed -i 's^CORE_INCS="$CORE_INCS /usr/local/include"^CORE_INCS="$CORE_INCS /usr/include/fastdfs /usr/include/fastcommon/"^g'  fastdfs-nginx-module-master/src/config
 
 修改完成后重新编译安装
 # ./configure --add-module=/usr/local/src/fastdfs-nginx-module-master/src --with-pcre=/usr/local/src/pcre-8.00
