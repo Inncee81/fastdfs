@@ -116,9 +116,8 @@ store_path0=/opt/fastdfs/storage
 
 
 
-
-
-
+开启nginx访问
+# sed -i "s^url_have_group_name = false^url_have_group_name = true^g" /etc/fdfs/mod_fastdfs.conf
 启动服务
 # /etc/init.d/fdfs_trackerd start
 # /etc/init.d/fdfs_storaged start
