@@ -39,10 +39,11 @@ base_path=/opt/fastdfs/tracker
 # HTTP port on this tracker server
 http.server_port=9270
 ##############
-
-
-
-
+sed -i "s^/home/yuqing/fastdfs^/opt/fastdfs/tracker^g" /etc/fdfs/storage.conf
+mkdir -p /opt/fastdfs/tracker
+mkdir -p /opt/fastdfs/storage
+mkdir -p /opt/fastdfs/client
+sed -i "s^/home/yuqing/fastdfs^/opt/fastdfs/storage^g" /etc/fdfs/storage.conf
 
 # vi /etc/fdfs/storage.conf
 ##############
@@ -113,7 +114,7 @@ group_name=group1
 store_path0=/opt/fastdfs/storage
 #store_path1=/home/yuqing/fastdfs1
 ##############
-
+sed -i "s^/home/yuqing/fastdfs^/opt/fastdfs/storage^g" /etc/fdfs/mod_fastdfs.conf
 
 
 开启nginx访问
