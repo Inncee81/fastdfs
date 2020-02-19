@@ -83,7 +83,7 @@ base_path=/opt/fastdfs/client
 tracker_server=172.16.6.56:22122
 #HTTP settings
 http.tracker_server_port=9270
-```
+
 
 
 unzip -q  fastdfs-nginx-module-master.zip
@@ -92,7 +92,7 @@ cp -f src/mod_fastdfs.conf   /etc/fdfs/
 
 
 vim  /etc/fdfs/mod_fastdfs.conf
-```
+
 url_have_group_name = true
 # the base path to store log files
 base_path=/tmp
@@ -114,7 +114,7 @@ group_name=group1
 # must same as storage.conf
 store_path0=/opt/fastdfs/storage
 #store_path1=/home/yuqing/fastdfs1
-```
+
 sed -i "s^/home/yuqing/fastdfs^/opt/fastdfs/storage^g" /etc/fdfs/mod_fastdfs.conf
 开启nginx访问
 sed -i "s^url_have_group_name = false^url_have_group_name = true^g" /etc/fdfs/mod_fastdfs.conf
