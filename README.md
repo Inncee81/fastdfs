@@ -17,7 +17,7 @@ cd libfastcommon-master/
 tar -xf fastdfs-5.11.tar.gz
 cd fastdfs-5.11
 ./make.sh && ./make.sh install
-```
+
 
 在/etc/init.d/ 目录下生成了两个服务相关脚本，便于停止 启动  fdfs_storaged fdfs_trackerd 服务
 
@@ -28,7 +28,7 @@ cp -a /usr/local/src/fastdfs-5.11/conf/*  /etc/fdfs/
 
 修改配置文件
 vi /etc/fdfs/tracker.conf
-```
+
 # the tracker server port
 port=22122
  
@@ -37,17 +37,17 @@ base_path=/opt/fastdfs/tracker
  
 # HTTP port on this tracker server
 http.server_port=9270
-```
-```
+
+
 sed -i "s^/home/yuqing/fastdfs^/opt/fastdfs/tracker^g" /etc/fdfs/tracker.conf
 sed -i "s^http.server_port=8080^http.server_port=9270^g" /etc/fdfs/tracker.conf
 sed -i "s^/home/yuqing/fastdfs^/opt/fastdfs/storage^g" /etc/fdfs/storage.conf
 mkdir -p /opt/fastdfs/tracker
 mkdir -p /opt/fastdfs/storage
 mkdir -p /opt/fastdfs/client
-```
+
 vim /etc/fdfs/storage.conf
-```
+
 # storage所属的组 同组中的数据是相互备份的
 group_name=group1
  
@@ -68,14 +68,14 @@ tracker_server=172.16.6.57:22122
  
 # the port of the web server on this storage server
 http.server_port=8888
-```
+
 
 
 
 sed -i "s^/home/yuqing/fastdfs^/opt/fastdfs/client^g" /etc/fdfs/client.conf
 sed -i "s^http.tracker_server_port=80^http.tracker_server_port=9270^g" /etc/fdfs/client.conf
 vim /etc/fdfs/client.conf：（客户端测试上传使用的，可以不配置）
-```
+
 # the base path to store log files
 base_path=/opt/fastdfs/client
 # tracker_server can ocur more than once, and tracker_server format is
@@ -144,21 +144,21 @@ cd nginx-1.17.5
 ./configure --add-module=/usr/local/src/fastdfs/fastdfs-nginx-module-master/src
 
 编译有可能会报错
-```
+
 -o objs/addon/src/ngx_http_fastdfs_module.o
 /software/fastdfs-nginx-module-1.20/src/ngx_http_fastdfs_module.c
 In file included from /software/fastdfs-nginx-module-1.20/src/common.c:26:0,
 from /software/fastdfs-nginx-module-1.20/src/ngx_http_fastdfs_module.c:6:
 /usr/include/fastdfs/fdfs_define.h:15:27: 致命错误：common_define.h：没有那个文件或目录
 #include "common_define.h"
-```
-```
+
+
 需要改fastdfs-nginx-module-master/src/config文件，两个位置，修改如下：
 原文件    ngx_module_incs="/usr/local/include"
 修改后    ngx_module_incs="/usr/include/fastdfs /usr/include/fastcommon/"
 原文件    CORE_INCS="$CORE_INCS /usr/local/include"
 修改后    CORE_INCS="$CORE_INCS /usr/include/fastdfs /usr/include/fastcommon/"
-```
+
 使用sed命令，config文件需要自行查找
 sed -i 's^ngx_module_incs="/usr/local/include"^ngx_module_incs="/usr/include/fastdfs /usr/include/fastcommon/"^g'  fastdfs-nginx-module-master/src/config
 sed -i 's^CORE_INCS="$CORE_INCS /usr/local/include"^CORE_INCS="$CORE_INCS /usr/include/fastdfs /usr/include/fastcommon/"^g'  fastdfs-nginx-module-master/src/config
@@ -172,7 +172,7 @@ make  &> /dev/null && make install  &> /dev/null
 安装完成后检测
 /usr/local/nginx/sbin/nginx  -t
 /usr/local/nginx/sbin/nginx: error while loading shared libraries: libpcre.so.0: cannot open shared object file: No such file or directory
-```
+
 检测报错，查找缺少哪个库
 # ldd  `which /usr/local/nginx/sbin/nginx`
 	linux-vdso.so.1 =>  (0x00007fffa0785000)
@@ -187,14 +187,14 @@ make  &> /dev/null && make install  &> /dev/null
 	/lib64/ld-linux-x86-64.so.2 (0x00007f16f2ef0000)
 	libfreebl3.so => /lib64/libfreebl3.so (0x00007f16f1c5a000)
 	libm.so.6 => /lib64/libm.so.6 (0x00007f16f1958000)
-```
+
 
 找到这个库在哪
 find / -name libpcre.so.1
 创建软连接
 ln -s /usr/local/lib/libpcre.so.0 /lib64
 
-```
+
 将如下配置加入nginx.conf server模块，监听端口端口根据实际需求修改
 vim /usr/local/nginx/conf/nginx.conf
 
@@ -202,7 +202,7 @@ vim /usr/local/nginx/conf/nginx.conf
             #设置模块
             ngx_fastdfs_module;
         }
-```
+
 拷贝可执行文件并启动
 cp /usr/local/nginx/sbin/nginx  /usr/sbin/
 nginx
@@ -211,6 +211,6 @@ nginx
 
 fdfs_upload_file /etc/fdfs/client.conf  IMG_0096.JPG
 group1/M00/00/00/rBAIv13LphKAYE_4AAY-cNoG5Gw236.JPG  ##返回值
-
+```
 访问
 https://172.16.8.193:800/group1/M00/00/00/rBAIv13LphKAYE_4AAY-cNoG5Gw236.JPG
